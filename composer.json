@@ -1,0 +1,24 @@
+{
+    "name": "star/parking-challenge",
+    "description": "Parking challenge",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Yannick Voyer",
+            "email": "email@example.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "": "src"
+        }
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "phpunit/phpunit": "3.7.*",
+        "behat/behat": "2.4.*@stable"
+    },
+    "config": {
+        "bin-dir": "bin/"
+    }
+}
