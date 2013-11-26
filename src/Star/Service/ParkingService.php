@@ -1,16 +1,14 @@
 <?php
 /**
  * This file is part of the parking project.
- * 
+ *
  * (c) Yannick Voyer (http://github.com/yvoyer)
  */
 
 namespace Star\Service;
 
-use Star\Bike;
-use Star\Car;
-use Star\Plane;
-use Star\PlaneCar;
+use Star\Requirement;
+use Star\Service\Valet\ParkingValet;
 
 /**
  * Class ParkingService
@@ -22,29 +20,26 @@ use Star\PlaneCar;
 class ParkingService
 {
     /**
+     * @var ParkingValet
+     */
+    private $valet;
+
+    /**
+     * @param ParkingValet $valet
+     */
+    public function __construct(ParkingValet $valet)
+    {
+        $this->valet = $valet;
+    }
+
+    /**
      * Park the $vehicle.
      *
-     * @param $vehicle
+     * @param Requirement $vehicle
      */
     public function park($vehicle)
     {
-        $vehicle->setSpeed(0);
-
-        if ($vehicle instanceof Bike) {
-            $vehicle->setIsLocked(true);
-        } else if ($vehicle instanceof Car) {
-            $vehicle->setTrunkLocked(true);
-            $vehicle->setParkingBrakeEnabled(true);
-        } else if ($vehicle instanceof PlaneCar) {
-            $vehicle->setTrunkLocked(true);
-            $vehicle->setFlapEnabled(true);
-            $vehicle->setEngineStopped(true);
-            $vehicle->setParkingBrakeEnabled(true);
-        } else if ($vehicle instanceof Plane) {
-            $vehicle->setFlapEnabled(true);
-            $vehicle->setEngineStopped(true);
-            $vehicle->setParkingBrakeEnabled(true);
-        }
+        $vehicle->validateRequirements();
+        $this->valet->park($vehicle);
     }
 }
- 

@@ -40,7 +40,7 @@ class FeatureContext extends BehatContext
      */
     public function iAmAParkingService()
     {
-        $this->service = new \Star\Service\ParkingService();
+        $this->service = new \Star\Service\ParkingService(new \Star\Service\Valet\SuperHandyValet());
     }
 
     /**
@@ -49,6 +49,9 @@ class FeatureContext extends BehatContext
     public function iReceiveACar()
     {
         $this->vehicle = new \Star\Car();
+        assertSame(100, $this->vehicle->getSpeed());
+        assertFalse($this->vehicle->parkingBrakeIsEnabled());
+        assertFalse($this->vehicle->trunkIsLocked());
         $this->service->park($this->vehicle);
     }
 
@@ -66,6 +69,8 @@ class FeatureContext extends BehatContext
     public function iReceiveABike()
     {
         $this->vehicle = new \Star\Bike();
+        assertSame(15, $this->vehicle->getSpeed());
+        assertFalse($this->vehicle->isLocked());
         $this->service->park($this->vehicle);
     }
 
@@ -83,6 +88,10 @@ class FeatureContext extends BehatContext
     public function iReceiveAPlane()
     {
         $this->vehicle = new \Star\Plane();
+        assertSame(300, $this->vehicle->getSpeed());
+        assertFalse($this->vehicle->parkingBrakeIsEnabled());
+        assertFalse($this->vehicle->engineIsStopped());
+        assertFalse($this->vehicle->flapEnabled());
         $this->service->park($this->vehicle);
     }
 
@@ -100,6 +109,11 @@ class FeatureContext extends BehatContext
     public function iReceiveAPlaneCar()
     {
         $this->vehicle = new \Star\PlaneCar();
+        assertSame(150, $this->vehicle->getSpeed());
+        assertFalse($this->vehicle->parkingBrakeIsEnabled());
+        assertFalse($this->vehicle->engineIsStopped());
+        assertFalse($this->vehicle->flapEnabled());
+        assertFalse($this->vehicle->trunkIsLocked());
         $this->service->park($this->vehicle);
     }
 

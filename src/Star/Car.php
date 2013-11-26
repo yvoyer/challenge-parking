@@ -1,11 +1,15 @@
 <?php
 /**
  * This file is part of the parking project.
- * 
+ *
  * (c) Yannick Voyer (http://github.com/yvoyer)
  */
 
 namespace Star;
+
+use Star\Vehicle\ParkingBrakeEquippedVehicle;
+use Star\Vehicle\TrunkEquippedVehicle;
+use Star\Vehicle\Vehicle;
 
 /**
  * Class Car
@@ -14,31 +18,34 @@ namespace Star;
  *
  * @package Star
  */
-class Car
+class Car extends Vehicle implements ParkingBrakeEquippedVehicle, TrunkEquippedVehicle
 {
-    /**
-     * @var int
-     */
-    private $speed = 100;
-
-    /**
-     * @var bool
-     */
-    private $parkingBrakeEnabled = false;
-
     /**
      * @var bool
      */
     private $trunkLocked = false;
 
     /**
-     * Set whether the trunk is locked.
-     *
-     * @param boolean $trunkLocked
+     * @var bool
      */
-    public function setTrunkLocked($trunkLocked)
+    private $parkingBrakeEnabled = false;
+
+    public function __construct()
     {
-        $this->trunkLocked = $trunkLocked;
+        $this->move(100);
+    }
+
+    /**
+     * Set whether the trunk is locked.
+     */
+    public function lockTrunk()
+    {
+        $this->trunkLocked = true;
+    }
+
+    public function unlockTrunk()
+    {
+        $this->trunkLocked = false;
     }
 
     /**
@@ -53,12 +60,18 @@ class Car
 
     /**
      * Set whether the parking brake is enabled.
-     *
-     * @param boolean $parkingBrakeEnabled
      */
-    public function setParkingBrakeEnabled($parkingBrakeEnabled)
+    public function applyParkingBrake()
     {
-        $this->parkingBrakeEnabled = $parkingBrakeEnabled;
+        $this->parkingBrakeEnabled = true;
+    }
+
+    /**
+     * Set whether the parking brake is enabled.
+     */
+    public function releaseParkingBrake()
+    {
+        $this->parkingBrakeEnabled = false;
     }
 
     /**
@@ -72,23 +85,10 @@ class Car
     }
 
     /**
-     * Set the speed.
-     *
-     * @param int $speed
+     * @return array
      */
-    public function setSpeed($speed)
+    protected function getRequirements()
     {
-        $this->speed = $speed;
-    }
-
-    /**
-     * Returns the Speed.
-     *
-     * @return int
-     */
-    public function getSpeed()
-    {
-        return $this->speed;
+        return array('getSpeed', 'parkingBrakeIsEnabled', 'trunkIsLocked');
     }
 }
- 

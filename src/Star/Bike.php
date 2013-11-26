@@ -1,11 +1,13 @@
 <?php
 /**
  * This file is part of the parking project.
- * 
+ *
  * (c) Yannick Voyer (http://github.com/yvoyer)
  */
 
 namespace Star;
+
+use Star\Vehicle\Vehicle;
 
 /**
  * Class Bike
@@ -14,26 +16,33 @@ namespace Star;
  *
  * @package Star
  */
-class Bike
+class Bike extends Vehicle
 {
     /**
      * @var bool
      */
     private $isLocked = false;
 
-    /**
-     * @var int
-     */
-    private $speed = 15;
+    public function __construct()
+    {
+        $this->move(15);
+        $this->unlock();
+    }
 
     /**
      * Set whether the bike is locked.
-     *
-     * @param boolean $isLocked
      */
-    public function setIsLocked($isLocked)
+    public function lock()
     {
-        $this->isLocked = $isLocked;
+        $this->isLocked = true;
+    }
+
+    /**
+     * Set whether the bike is locked.
+     */
+    public function unlock()
+    {
+        $this->isLocked = false;
     }
 
     /**
@@ -47,23 +56,10 @@ class Bike
     }
 
     /**
-     * Set the speed.
-     *
-     * @param int $speed
+     * @return array
      */
-    public function setSpeed($speed)
+    protected function getRequirements()
     {
-        $this->speed = $speed;
-    }
-
-    /**
-     * Returns the Speed.
-     *
-     * @return int
-     */
-    public function getSpeed()
-    {
-        return $this->speed;
+        return array('getSpeed', 'isLocked');
     }
 }
- 

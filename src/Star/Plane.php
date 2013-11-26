@@ -1,11 +1,14 @@
 <?php
 /**
  * This file is part of the parking project.
- * 
+ *
  * (c) Yannick Voyer (http://github.com/yvoyer)
  */
 
 namespace Star;
+
+use Star\Vehicle\AirbornVehicle;
+use Star\Vehicle\Vehicle;
 
 /**
  * Class Plane
@@ -14,7 +17,7 @@ namespace Star;
  *
  * @package Star
  */
-class Plane
+class Plane extends Vehicle implements AirbornVehicle
 {
     /**
      * @var bool
@@ -31,39 +34,25 @@ class Plane
      */
     private $parkingBrakeEnabled = false;
 
-    /**
-     * @var int
-     */
-    private $speed = 300;
-
-    /**
-     * Set the speed.
-     *
-     * @param int $speed
-     */
-    public function setSpeed($speed)
+    public function __construct()
     {
-        $this->speed = $speed;
-    }
-
-    /**
-     * Returns the Speed.
-     *
-     * @return int
-     */
-    public function getSpeed()
-    {
-        return $this->speed;
+        $this->move(300);
     }
 
     /**
      * Set whether the parking brake is enabled.
-     *
-     * @param boolean $parkingBrakeEnabled
      */
-    public function setParkingBrakeEnabled($parkingBrakeEnabled)
+    public function applyParkingBrake()
     {
-        $this->parkingBrakeEnabled = $parkingBrakeEnabled;
+        $this->parkingBrakeEnabled = true;
+    }
+
+    /**
+     * Set whether the parking brake is enabled.
+     */
+    public function releaseParkingBrake()
+    {
+        $this->parkingBrakeEnabled = false;
     }
 
     /**
@@ -78,12 +67,10 @@ class Plane
 
     /**
      * Set the flapEnabled flag.
-     *
-     * @param boolean $flapEnabled
      */
-    public function setFlapEnabled($flapEnabled)
+    public function enableFlaps()
     {
-        $this->flapEnabled = $flapEnabled;
+        $this->flapEnabled = true;
     }
 
     /**
@@ -98,12 +85,18 @@ class Plane
 
     /**
      * Set whether the engine is stopped.
-     *
-     * @param boolean $engineStopped
      */
-    public function setEngineStopped($engineStopped)
+    public function startEngine()
     {
-        $this->engineStopped = $engineStopped;
+        $this->engineStopped = false;
+    }
+
+    /**
+     * Set whether the engine is stopped.
+     */
+    public function stopEngine()
+    {
+        $this->engineStopped = true;
     }
 
     /**
@@ -115,5 +108,12 @@ class Plane
     {
         return $this->engineStopped;
     }
+
+    /**
+     * @return array
+     */
+    protected function getRequirements()
+    {
+        return array('engineIsStopped', 'flapEnabled', 'parkingBrakeIsEnabled', 'getSpeed');
+    }
 }
- 
